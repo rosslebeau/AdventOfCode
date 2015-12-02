@@ -7,7 +7,7 @@ valueForChar _ = 0
 
 main :: IO ()
 main = do
-    inputHandle <- openFile "input" ReadMode
+    inputHandle <- openFile "pt1_input" ReadMode
     input <- hGetContents inputHandle
 
     print $ sum $ map valueForChar input
