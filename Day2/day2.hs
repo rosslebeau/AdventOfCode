@@ -5,6 +5,7 @@ import Data.List.Split (splitOn)
 type Gift = (Int, Int, Int)
 
 -- Part 1
+
 area :: Gift -> Int
 area (l, w, h) = (2 * l * w) + (2 * w * h) + (2 * h * l)
 
@@ -17,6 +18,7 @@ wrappingPaperAreaForGift gift = (area gift) + (areaOfSmallestSide gift)
 --wrappingPaperAreaForGift gift = foldl (\acc x -> acc + (x gift)) 0 [area, areaOfSmallestSide]
 
 --  Part 2
+
 bowLengthForGift :: Gift -> Int
 bowLengthForGift (l, w, h) = l * w * h
 
@@ -28,11 +30,13 @@ ribbonlengthForGift :: Gift -> Int
 ribbonlengthForGift gift = (perimeterOfSmallestSide gift) + (bowLengthForGift gift)
 
 -- Shared
+
+-- Problem states gifts are in the format "lxwxh", e.g. "6x2x3"
 giftFromString :: String -> Gift
 giftFromString s = (read l :: Int, read w :: Int, read h :: Int)
     where [l, w, h] = splitOn "x" s
 
--- Problem states gifts are one-per-line, in the format of "lxwxh", e.g. "6x2x3"
+-- Problem states gifts are one-per-line
 giftListFromInput :: String -> [Gift]
 giftListFromInput input = map giftFromString (words input)
 
