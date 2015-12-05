@@ -1,4 +1,4 @@
-import System.IO 
+import System.IO
 import Data.List
 
 valueForChar :: Char -> Int
@@ -13,7 +13,8 @@ firstNegativeFloor directions = case (elemIndex (-1) $ takeWhile (>=0) (scanl (+
 
 main :: IO ()
 main = do
-    inputHandle <- openFile "pt2_input" ReadMode
+    inputHandle <- openFile "input" ReadMode
     input <- hGetContents inputHandle
 
-    print $ elemIndex (-1) $ (scanl (+) 0 (map valueForChar input))
+    print $ ("Part 1: " ++) . show $ sum $ map valueForChar input
+    print $ ("Part 2: " ++) . show $ elemIndex (-1) $ (scanl (+) 0 (map valueForChar input))

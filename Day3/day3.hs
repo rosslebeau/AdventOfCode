@@ -13,7 +13,7 @@ nextHouse (startX, startY) direction
     | direction == '>' = (startX + 1, startY)
     | direction == 'v' = (startX, startY - 1)
     | direction == '<' = (startX - 1, startY)
-    | otherwise = (0, 0) -- It's specified that this won't happen
+    | otherwise = (0,0) -- It's specified that this won't happen
 
 housesFromDirections :: [Char] -> [House]
 housesFromDirections directions = scanl nextHouse (0,0) directions
@@ -23,7 +23,8 @@ housesFromAlternatingDirections directions = concat [(housesFromDirections (ever
 
 main :: IO ()
 main = do
-    inputHandle <- openFile "pt1_input" ReadMode
+    inputHandle <- openFile "input" ReadMode
     input <- hGetContents inputHandle
 
-    print $ length $ nub $ housesFromDirections (input)
+    print $ ("Part 1: " ++) . show $ length $ nub $ housesFromDirections (input)
+    print $ ("Part 2: " ++) . show $ length $ nub $ housesFromAlternatingDirections (input)
