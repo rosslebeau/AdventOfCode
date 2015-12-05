@@ -1,5 +1,6 @@
 import System.IO
 import Data.List
+import Data.Char (isSpace)
 
 type House = (Int, Int)
 
@@ -13,7 +14,7 @@ nextHouse (startX, startY) direction
     | direction == '>' = (startX + 1, startY)
     | direction == 'v' = (startX, startY - 1)
     | direction == '<' = (startX - 1, startY)
-    | otherwise = (0,0) -- It's specified that this won't happen
+    | otherwise = error $ "Unexpected input: " ++ [direction]
 
 housesFromDirections :: [Char] -> [House]
 housesFromDirections directions = scanl nextHouse (0,0) directions
@@ -26,5 +27,7 @@ main = do
     inputHandle <- openFile "input" ReadMode
     input <- hGetContents inputHandle
 
-    print $ ("Part 1: " ++) . show $ length $ nub $ housesFromDirections (input)
-    print $ ("Part 2: " ++) . show $ length $ nub $ housesFromAlternatingDirections (input)
+    let inputNoWhitespace = filter (not . isSpace) input
+
+    print $ ("Part 1: " ++) . show $ length $ nub $ housesFromDirections (inputNoWhitespace)
+    print $ ("Part 2: " ++) . show $ length $ nub $ housesFromAlternatingDirections (inputNoWhitespace)
