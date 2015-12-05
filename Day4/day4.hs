@@ -39,6 +39,3 @@ main = do
 
     print $ ("Part 1: " ++) . show $ (1 +) $ length $ takeWhile (not . (anyIsPrefix requiredPrefixesPart1)) (incrementalHashes "yzbqklnj")
     print $ ("Part 2: " ++) . show $ (1 +) $ length $ takeWhile (not . (ByteString.isPrefixOf requiredPrefixPart2)) (incrementalHashes "yzbqklnj")
-    --print $ ByteString.isPrefixOf requiredPrefix (hash (ByteString.Char8.pack "abcdef609043"))
-    --print $ hex (hash (ByteString.Char8.pack "abcdef609043"))
-    --print $ hex $ ByteString.pack [0, 0, 300]
