@@ -75,7 +75,12 @@ do {
     let wires = wiresFromInput(fileContent as String)
     
     let val = try resolveVal("a", wires: wires)
-    print(val)
+    print("Part 1: \(val)")
+    
+    resolvedVals = [String: Int]()
+    resolvedVals["b"] = val
+    let val2 = try resolveVal("a", wires: wires)
+    print("Part 2: \(val2)")
 }
 catch ResolutionError.WireNameNotFound(let name) {
     print("could not resolve: " + name)
