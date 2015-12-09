@@ -54,7 +54,7 @@ func resolveVal(name: String, wires: [String: String]) throws -> Int {
             }
             else if sig.componentsSeparatedByString(" RSHIFT ").count == 2 {
                 let components = sig.componentsSeparatedByString(" RSHIFT ")
-                val = try (resolveVal(components[0], wires: wires) >> resolveVal(components[1], wires: wires))
+                val = try resolveVal(components[0], wires: wires) >> resolveVal(components[1], wires: wires)
             }
             else {
                 val = try resolveVal(sig, wires: wires)
