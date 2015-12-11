@@ -12,26 +12,26 @@ enum AdventError: ErrorType {
 // and use this to fill in entries for both directions
 func cityPathsEqual(input: [NSString]) throws -> [String: [String: Int]] {
     var cities = [String: [String: Int]]()
-    
+
     for line in input {
         let componentsRegex = try NSRegularExpression(pattern: "(.+) to (.+) = ([0-9]+)", options:NSRegularExpressionOptions(rawValue: 0))
         let matchedComponents = componentsRegex.matchesInString(line as String, options: NSMatchingOptions(rawValue: 0), range: NSMakeRange(0, line.length))
-        
+
         if matchedComponents.count == 1 && matchedComponents[0].numberOfRanges == 4 {
             let a = line.substringWithRange(matchedComponents[0].rangeAtIndex(1)) as String
             let b = line.substringWithRange(matchedComponents[0].rangeAtIndex(2)) as String
             guard let d = Int(line.substringWithRange(matchedComponents[0].rangeAtIndex(3)) as String) else {
                 throw AdventError.InvalidInput(input: line as String)
             }
-            
+
             addPathsToCities(a, cityB: b, distance: d, currentPaths: &cities)
         }
         else {
-            
+
             throw AdventError.InvalidInput(input: line as String)
         }
     }
-    
+
     return cities
 }
 
@@ -48,7 +48,7 @@ func addPathToCities(cityA: String, cityB: String, distance: Int, inout currentP
     else {
         cityAPaths = [String: Int]()
     }
-    
+
     cityAPaths[cityB] = distance
     currentPaths[cityA] = cityAPaths
 }
@@ -57,7 +57,7 @@ func pathBetweenCities(cityA: String, cityB: String, paths: [String: [String: In
     guard let startCityPaths = paths[cityA], let endCityDistance = startCityPaths[cityB] else {
         throw AdventError.PathNotFound(cityA: cityA, cityB: cityB)
     }
-    
+
     return endCityDistance
 }
 
@@ -67,7 +67,7 @@ func getMinimumDistance(startCity: String, cities: [String], endCity: String, pa
     if cities.isEmpty {
         throw AdventError.EmptyDestination
     }
-    
+
     if cities.count == 1 {
         return try pathBetweenCities(startCity, cityB: endCity, paths: paths)
     }
@@ -85,7 +85,7 @@ func getMaximumDistance(startCity: String, cities: [String], endCity: String, pa
     if cities.isEmpty {
         throw AdventError.EmptyDestination
     }
-    
+
     if cities.count == 1 {
         return try pathBetweenCities(startCity, cityB: endCity, paths: paths)
     }
@@ -100,29 +100,29 @@ func getMaximumDistance(startCity: String, cities: [String], endCity: String, pa
 }
 
 do {
-    guard let filePath = NSBundle.mainBundle().pathForResource("input", ofType: nil) else {
-        throw AdventError.InputPathFailed
-    }
-    
-    let fileContent = try NSString(contentsOfFile: filePath, encoding: NSUTF8StringEncoding)
-    
+    // guard let filePath = NSBundle.mainBundle().pathForResource("input", ofType: nil) else {
+    //     throw AdventError.InputPathFailed
+    // }
+
+    let fileContent = try NSString(contentsOfFile: "input", encoding: NSUTF8StringEncoding)
+
     let lines = fileContent.componentsSeparatedByCharactersInSet(NSCharacterSet.newlineCharacterSet()).filter{!$0.isEmpty}
-    
+
     let cityPaths = try cityPathsEqual(lines)
     let cities = Array(cityPaths.keys)
-    
+
     if cities.count < 2 {
         throw AdventError.NotEnoughCities
     }
-    
+
     let startTime1 = NSDate()
-    
+
     let minDistance = try cities.map({startCity -> Int in
         let endCities = cities.filter(({city in city != startCity}))
         return try endCities.map({endCity in try getMinimumDistance(startCity, cities: endCities, endCity: endCity, paths: cityPaths)}).reduce(Int.max, combine: {min($0, $1)})
     }).reduce(Int.max, combine: {min($0, $1)})
     let timeElapsed1 = NSDate().timeIntervalSinceDate(startTime1)
-    
+
     let startTime2 = NSDate()
     let maxDistance = try cities.map({startCity -> Int in
         let endCities = cities.filter(({city in city != startCity}))
