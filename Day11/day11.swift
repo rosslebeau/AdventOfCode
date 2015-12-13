@@ -93,21 +93,21 @@ func isValidPassword(pass: String) throws -> Bool {
         if !has3Straight {
             if curChar == "a" {
                 straightCount = 1
-                continue
-            }
-            
-            guard let curCharIndex = alphabet.indexOf(curChar), let prevCharIndex = alphabet.indexOf((prevChar)) else {
-                throw AdventError.WrongChar
-            }
-            
-            if curCharIndex == prevCharIndex.successor() {
-                straightCount = straightCount + 1
-                if straightCount == 3 {
-                    has3Straight = true
-                }
             }
             else {
-                straightCount = 1
+                guard let curCharIndex = alphabet.indexOf(curChar), let prevCharIndex = alphabet.indexOf((prevChar)) else {
+                    throw AdventError.WrongChar
+                }
+                
+                if curCharIndex == prevCharIndex.successor() {
+                    straightCount = straightCount + 1
+                    if straightCount == 3 {
+                        has3Straight = true
+                    }
+                }
+                else {
+                    straightCount = 1
+                }
             }
         }
         
@@ -118,7 +118,7 @@ func isValidPassword(pass: String) throws -> Bool {
 }
 
 func nextValidPassword(oldPass: String) throws -> String {
-    var curPass = oldPass
+    var curPass = try incrementPassword(oldPass)
     var found = false
     
     while found == false {
@@ -135,7 +135,12 @@ func nextValidPassword(oldPass: String) throws -> String {
 
 do {
     let input = "cqjxjnds"
-    try print(nextValidPassword(input))
+    
+    let nextValidPass1 = try nextValidPassword(input)
+    print("Part 1: " + nextValidPass1)
+    
+    let nextValidPass2 = try nextValidPassword(nextValidPass1)
+    print("Part 2: " + nextValidPass2)
 }
 catch AdventError.WrongChar {
     print("Password had invalid character")
