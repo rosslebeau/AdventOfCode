@@ -58,7 +58,7 @@ func isValidPassword(pass: String) throws -> Bool {
     let passChars = pass.characters
     
     var has3Straight = false
-    var strightCount = 1
+    var straightCount = 1
     
     var has2Repeat = false
     var numRepeats = 0
@@ -92,7 +92,7 @@ func isValidPassword(pass: String) throws -> Bool {
         
         if !has3Straight {
             if curChar == "a" {
-                strightCount = 1
+                straightCount = 1
                 continue
             }
             
@@ -101,13 +101,13 @@ func isValidPassword(pass: String) throws -> Bool {
             }
             
             if curCharIndex == prevCharIndex.successor() {
-                strightCount = strightCount + 1
-                if strightCount == 3 {
+                straightCount = straightCount + 1
+                if straightCount == 3 {
                     has3Straight = true
                 }
             }
             else {
-                strightCount = 1
+                straightCount = 1
             }
         }
         
@@ -118,14 +118,19 @@ func isValidPassword(pass: String) throws -> Bool {
 }
 
 func nextValidPassword(oldPass: String) throws -> String {
-    let incremented = try incrementPassword(oldPass)
+    var curPass = oldPass
+    var found = false
     
-    if try isValidPassword(incremented) {
-        return incremented
+    while found == false {
+        if try isValidPassword(curPass) {
+            found = true
+        }
+        else {
+            curPass = try incrementPassword(curPass)
+        }
     }
-    else {
-        return try nextValidPassword(incremented)
-    }
+    
+    return curPass
 }
 
 do {
