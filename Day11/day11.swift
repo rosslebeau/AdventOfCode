@@ -117,6 +117,7 @@ func isValidPassword(pass: String) throws -> Bool {
     return has3Straight && has2Repeat
 }
 
+// Warning, this is very slow. I imaging using C strings for so much comparison would speed it up a lot
 func nextValidPassword(oldPass: String) throws -> String {
     var curPass = try incrementPassword(oldPass)
     var found = false
